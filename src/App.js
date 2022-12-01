@@ -5,7 +5,7 @@ import Page from "./componentes/pagina";
 function App() {
   const [Personage, setPersonages] = useState([]);
   const [info, setInfo] = useState({});
-  const [page , setPage ] = useState(1);
+  const [page, setPage] = useState(1);
   const Iurl = "https://rickandmortyapi.com/api/character";
 
   const BuscaPersonajes = (url) => {
@@ -20,20 +20,19 @@ function App() {
 
   const onPrevius = () => {
     BuscaPersonajes(info.prev);
-    const prevPage = page - 1 ;
+    const prevPage = page - 1;
     setPage(prevPage);
   };
 
   const onNext = () => {
     BuscaPersonajes(info.next);
-    const nextPage = page + 1 ;
+    const nextPage = page + 1;
     setPage(nextPage);
   };
 
   useEffect(() => {
     BuscaPersonajes(Iurl);
-  },[]);
-
+  }, []);
 
   return (
     <>
