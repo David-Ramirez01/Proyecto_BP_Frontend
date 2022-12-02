@@ -2,56 +2,54 @@ import { useEffect, useState } from "react";
 import Nav from "./componentes/navbar";
 import Person from "./componentes/Personajes";
 import Page from "./componentes/pagina";
+import axios from "axios";
 function App() {
   const [Personage, setPersonages] = useState([]);
   const [info, setInfo] = useState({});
   const [page, setPage] = useState(1);
   const Iurl = "https://rickandmortyapi.com/api/character";
 
-  const BuscaPersonajes = (url) => {
-    fetch(url)
-      .then((respuest) => respuest.json())
-      .then((data) => {
-        setPersonages(data.results);
-        setInfo(data.info);
-      })
-      .catch((error) => console.log(error));
+  const BuscarP = async (url) => {
+    await axios.get(url).then((resp) => {
+      setPersonages(resp.data.results);
+      setInfo(resp.data.info);
+    });
   };
 
+  useEffect(() => {
+    BuscarP(Iurl);
+  },[]);
+
   const onPrevius = () => {
-    BuscaPersonajes(info.prev);
-    const prevPage = page - 1;
+    BuscarP(info.prev);
+    const prevPage = page - 1 ;
     setPage(prevPage);
   };
 
   const onNext = () => {
-    BuscaPersonajes(info.next);
-    const nextPage = page + 1;
+    BuscarP(info.next);
+    const nextPage = page + 1 ;
     setPage(nextPage);
   };
-
-  useEffect(() => {
-    BuscaPersonajes(Iurl);
-  }, []);
 
   return (
     <>
       <Nav />
       <div className="container mt-5">
-        <h1> Pagina :{page}</h1>
-        <Page
-          prev={info.prev}
-          next={info.next}
-          onPrevius={onPrevius}
-          onNext={onNext}
-        />
+      <h1> Pagina :{page}</h1>
+      <Page
+        prev={info.prev}
+        next={info.next}
+        onPrevius={onPrevius}
+        onNext={onNext}
+      />
         <Person Characters={Personage} />
         <Page
-          prev={info.prev}
-          next={info.next}
-          onPrevius={onPrevius}
-          onNext={onNext}
-        />
+        prev={info.prev}
+        next={info.next}
+        onPrevius={onPrevius}
+        onNext={onNext}
+      />
       </div>
     </>
   );
